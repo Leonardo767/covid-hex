@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Leonardo767/covid-hex#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "geojson2h3": "^1.0.1",
     "h3-js": "^3.6.3",
     "mapbox-gl": "^0.43.0"
