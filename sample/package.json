@@ -6,9 +6,23 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leonardo767/covid-hex.git"
+  },
+  "keywords": [
+    "covid",
+    "h3"
+  ],
+  "author": "Leonardo Pinero-Perez",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Leonardo767/covid-hex/issues"
+  },
+  "homepage": "https://github.com/Leonardo767/covid-hex#readme",
   "dependencies": {
-    "h3-js": "^3.6.3"
+    "geojson2h3": "^1.0.1",
+    "h3-js": "^3.6.3",
+    "mapbox-gl": "^0.43.0"
   }
 }

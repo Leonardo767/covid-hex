@@ -45,8 +45,8 @@ a:hover {
 
 .map {
   position: absolute;
-  left: 33.3333%;
-  width: 66.6666%;
+  /* left: 33.3333%; */
+  width: 100%;
   top: 0;
   bottom: 0;
 }

@@ -1,4 +1,4 @@
-mapboxgl.accessToken = config.KEY_MAPBOX;
+mapboxgl.accessToken = api_config.KEY_MAPBOX;
 
 var map = new mapboxgl.Map({
   container: "map",
