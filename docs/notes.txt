@@ -1,0 +1,6 @@
+MAP LIBRARIES:
+----------------------------------
+map editor: Maputnik
+implementation: VectorTiles
+API: OpenLayers
+data: OpenMapTiles
