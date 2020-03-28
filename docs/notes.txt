@@ -4,3 +4,13 @@ map editor: Maputnik
 implementation: VectorTiles
 API: OpenLayers
 data: OpenMapTiles
+
+
+Repo folder structure:
+
+api/
+h3/
+
+map/
+
+geojson/
