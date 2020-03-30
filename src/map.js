@@ -1,17 +1,12 @@
 import React, { Component } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
-import {
-  layer_example,
-  geojson_example,
-  hex_geojson,
-  hex_layer
-} from "./layers";
+import { hex_4, hex_6, hex_layer } from "./layers";
 
 class Map extends Component {
   constructor(props) {
     super(props);
-    this.lat0 = -57;
-    this.lon0 = -142;
+    this.lat0 = 37.8;
+    this.lon0 = -122.4;
     this.zoom0 = 7;
     const viewport = {
       latitude: this.lat0,
@@ -41,10 +36,10 @@ class Map extends Component {
           this.setViewport(viewport);
         }}
       >
-        {/* <Source id="my-data" type="geojson" data={geojson_example}>
-          <Layer {...layer_example} />
-        </Source> */}
-        <Source id="h3-hexes" type="geojson" data={hex_geojson}>
+        <Source id="h3-hexes" type="geojson" data={hex_6}>
+          <Layer {...hex_layer} />
+        </Source>
+        <Source id="h3-hexes" type="geojson" data={hex_4}>
           <Layer {...hex_layer} />
         </Source>
       </ReactMapGL>
