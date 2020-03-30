@@ -1,16 +1,32 @@
-MAP LIBRARIES:
-----------------------------------
-map editor: Maputnik
-implementation: VectorTiles
-API: OpenLayers
-data: OpenMapTiles
+---------------------\\
+TOOLS:
+----------------------------------//
+map provider: Mapbox
+framework: React
+libraries: ReactMapGL, h3-js, geojson2h3
+Data API: OpenLayers
 
 
-Repo folder structure:
+---------------------\\
+PROPOSED FEATURES:
+----------------------------------//
+Map:
+-historical slider
+-layered h3 tiles
 
-api/
-h3/
+Calcs:
+-populate per-county cases according to population density (2010 US census data)
+-aggregate cases as user zooms out to higher hex layers
 
-map/
+User requests:
+-search city, county, country, state, province (respond with filtered suggestions)
 
-geojson/
+
+---------------------\\
+PROPOSED TEAM ROLES:
+----------------------------------//
+-Architecture
+-Server
+-UI
+-UX
+-hex calculations

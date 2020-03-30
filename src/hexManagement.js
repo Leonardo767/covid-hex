@@ -115,3 +115,4 @@ function renderAreas(map, hexagons, threshold) {
   // Update the geojson data
   source.setData(geojson);
 }
+// ==========================================================================================================================
