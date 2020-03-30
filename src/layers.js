@@ -34,3 +34,19 @@ export const hex_layer = {
     "fill-outline-color": "rgba(0,0,0,0.5)"
   }
 };
+
+function hexRender(zoomLvl, viewportBoundingBox) {
+  // render necessary hex source/layer pairs
+  // for a given bounding box and zoom level
+  // =============================================
+  // return a render() function, acts like component
+  // render params of form:
+  // <Source id="h3-hexes" type="geojson" data={hex_6}>
+  //   <Layer {...hex_layer} />
+  // </Source>
+  // <Source id="h3-hexes" type="geojson" data={hex_4}>
+  //   <Layer {...hex_layer} />
+  // </Source>
+}
+
+export default hexRender;

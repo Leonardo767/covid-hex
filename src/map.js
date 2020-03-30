@@ -5,6 +5,7 @@ import { hex_4, hex_6, hex_layer } from "./layers";
 class Map extends Component {
   constructor(props) {
     super(props);
+    // define viewport
     this.lat0 = 37.8;
     this.lon0 = -122.4;
     this.zoom0 = 7;
@@ -15,7 +16,7 @@ class Map extends Component {
       height: "100vh",
       zoom: this.zoom0
     };
-    // initialize viewport
+    // pass viewport to internal Map state
     this.state = {
       viewport: viewport
     };
