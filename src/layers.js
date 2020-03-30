@@ -26,7 +26,7 @@ export const geojson_example = {
 // GENERATE HEX GEOJSON
 
 function create_hexagons(lon, lat) {
-  const centerHex = geoToH3(lon, lat, 8);
+  const centerHex = geoToH3(lat, lon, 8);
   const kRing_res = kRing(centerHex, 3);
   // Reduce hexagon list to a map with random values
   return kRing_res.reduce(
@@ -42,11 +42,23 @@ function create_hex_geojson(hexagons) {
       value: hexagons[hex]
     })
   );
+  console.log(geojson);
   console.log("returning geojson hex...");
   return geojson;
 }
 
-export const hex_geojson = create_hex_geojson(create_hexagons(-122.4, 37.8));
+function create_hex_geojson_areas(hexagons) {
+  const geojson = geojson2h3.h3SetToFeature(
+    Object.keys(hexagons).filter(hex => hexagons[hex] > 0.2)
+  );
+  console.log(geojson);
+  console.log("returning geojson hex...");
+  return geojson;
+}
+
+export const hex_geojson = create_hex_geojson_areas(
+  create_hexagons(-122.4, 37.8)
+);
 
 export const hex_layer = {
   id: "h3-hexes-layer",

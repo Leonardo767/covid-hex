@@ -1,5 +1,4 @@
-import React, { useState, Component } from "react";
-import { create_hexagons } from "./data/hex-SanFran.js";
+import React, { Component } from "react";
 import Map from "./map";
 import "./App.css";
 

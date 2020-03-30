@@ -10,8 +10,8 @@ import {
 class Map extends Component {
   constructor(props) {
     super(props);
-    this.lat0 = 32;
-    this.lon0 = -97;
+    this.lat0 = -57;
+    this.lon0 = -142;
     this.zoom0 = 7;
     const viewport = {
       latitude: this.lat0,
