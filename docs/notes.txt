@@ -12,7 +12,9 @@ PROPOSED FEATURES:
 ----------------------------------//
 Map:
 -historical slider
--layered h3 tiles
+-layered h3 tile rendering
+-scaled, aggregate data of confirmed cases
+-toggle display mode from per-hex to per-county
 
 Calcs:
 -populate per-county cases according to population density (2010 US census data)
@@ -30,3 +32,16 @@ PROPOSED TEAM ROLES:
 -UI
 -UX
 -hex calculations
+
+
+
+---------------------\\
+PROPOSED APP STRUCTURE:
+----------------------------------//
+App.js
+    Map.js
+        Layers.js (hex, data, etc.)
+            python h3 calculations
+    SearchCity.js
+    Plots.js
+    HistoricalSlider.js (export global time)
