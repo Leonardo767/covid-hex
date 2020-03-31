@@ -7,7 +7,7 @@ import geojson2h3 from "geojson2h3";
 
 function generate_hex_geojson(lat, lon, lvl) {
   const centerHexID = geoToH3(lat, lon, lvl);
-  const kRingHexIDs = kRing(centerHexID, lvl);
+  const kRingHexIDs = kRing(centerHexID, 1);
   const Hexes = kRingHexIDs.reduce(
     (res, hexagon) => ({ ...res, [hexagon]: Math.random() }),
     {}
