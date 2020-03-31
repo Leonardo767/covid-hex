@@ -1,41 +1,35 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
 import { hex_4, hex_6, hex_layer } from "./layers";
+import Search from "./components/Search";
 
-class Map extends Component {
-  constructor(props) {
-    super(props);
-    // define viewport
-    this.lat0 = 37.8;
-    this.lon0 = -122.4;
-    this.zoom0 = 7;
-    const viewport = {
-      latitude: this.lat0,
-      longitude: this.lon0,
-      width: "100vw",
-      height: "100vh",
-      zoom: this.zoom0
-    };
-    // pass viewport to internal Map state
-    this.state = {
-      viewport: viewport
-    };
-  }
+function Map(props) {
+  // const {} = props;
+  const [viewport, setViewport] = useState({
+    latitude: 33.9137,
+    longitude: -98.4934,
+    width: "100vw",
+    height: "100vh",
+    zoom: 7
+  });
 
-  setViewport(viewport) {
-    // updates viewport upon panning, scrolling, etc.
-    this.setState({ viewport: viewport });
-  }
+  const changeViewport = (lat, long) => {
+    setViewport(viewport => [
+      {
+        ...viewport,
+        latitude: lat,
+        longitude: long
+      }
+    ]);
+  };
 
-  render() {
-    return (
+  return (
+    <div>
       <ReactMapGL
-        {...this.state.viewport}
+        {...viewport}
         // specify API token and controller for ReactMapGL
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-        onViewportChange={viewport => {
-          this.setViewport(viewport);
-        }}
+        onViewportChange={setViewport}
       >
         <Source id="h3-hexes" type="geojson" data={hex_6}>
           <Layer {...hex_layer} />
@@ -44,8 +38,9 @@ class Map extends Component {
           <Layer {...hex_layer} />
         </Source>
       </ReactMapGL>
-    );
-  }
+      <Search />
+    </div>
+  );
 }
 
 export default Map;
