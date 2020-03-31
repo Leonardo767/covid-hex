@@ -4,6 +4,7 @@ import { SearchRounded } from "@material-ui/icons";
 import clsx from "clsx";
 import useStyles from "./styles";
 import { useEffect } from "react";
+import MapBoxAPI from "../../api/mapbox";
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -24,6 +25,9 @@ function Search() {
       if (shouldCallAPI && searchText.length) {
         try {
           setIsLoading(true);
+          const data = await MapBoxAPI.getCoordinates(searchText);
+          console.log("data in api", data);
+
           // Make our API Call
 
           await sleep(500);
@@ -38,7 +42,6 @@ function Search() {
 
     return () => {
       shouldCallAPI = false;
-      console.log("destroying on", searchText);
     };
   }, [searchText]);
 
