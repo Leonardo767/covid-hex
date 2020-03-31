@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Fab, Paper, InputBase, CircularProgress } from "@material-ui/core";
 import { SearchRounded } from "@material-ui/icons";
-import { Autocomplete } from "@material-ui/lab";
 import clsx from "clsx";
 import useStyles from "./styles";
+import { useEffect } from "react";
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function Search() {
   const classes = useStyles();
@@ -11,20 +15,37 @@ function Search() {
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  function handleSearchTextChange(e) {
-    const text = e.target.value;
-    
-    setSearchText(text);
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1000);
-  }
+  useEffect(() => {
+    let shouldCallAPI = true;
+
+    async function fetchData() {
+      await sleep(500);
+
+      if (shouldCallAPI && searchText.length) {
+        try {
+          setIsLoading(true);
+          // Make our API Call
+
+          await sleep(500);
+          setIsLoading(false);
+        } catch (err) {
+          console.error(err.toString());
+        }
+      }
+    }
+
+    fetchData();
+
+    return () => {
+      shouldCallAPI = false;
+      console.log("destroying on", searchText);
+    };
+  }, [searchText]);
 
   return (
     <div className={classes.root}>
       <Fab
-        className={clsx(classes.searchIcon, {
-          [classes["searchIcon--open"]]: isOpen
-        })}
+        className={classes.searchIcon}
         color="primary"
         aria-label="search"
         onClick={() => setIsOpen(prev => !prev)}
@@ -32,45 +53,20 @@ function Search() {
         <SearchRounded />
       </Fab>
 
-      {isOpen && (
-        <Paper
-          className={clsx(classes.wrapper, {
-            [classes["wrapper--open"]]: isOpen
-          })}
-        >
-          <Autocomplete
-            id="asynchronous-demo"
-            style={{ width: 300 }}
-            open={isOpen}
-            onOpen={() => setIsOpen(true)}
-            onClose={() => setIsOpen(false)}
-            getOptionSelected={(option, value) => option.name === value.name}
-            getOptionLabel={option => option.name}
-            options={["james", "patrick"]}
-            loading={isLoading}
-            renderInput={params => (
-              <InputBase
-                className={classes.searchField}
-                placeholder="City or State"
-                value={searchText}
-                onChange={handleSearchTextChange}
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <React.Fragment>
-                      {isLoading && (
-                        <CircularProgress color="inherit" size={20} />
-                      )}
-                      {params.InputProps.endAdornment}
-                    </React.Fragment>
-                  )
-                }}
-                fullWidth
-              />
-            )}
-          />
-        </Paper>
-      )}
+      <Paper
+        className={clsx(classes.wrapper, {
+          [classes["wrapper--open"]]: isOpen
+        })}
+      >
+        <InputBase
+          className={classes.searchField}
+          placeholder="City or State"
+          value={searchText}
+          onChange={e => setSearchText(e.target.value)}
+          fullWidth
+        />
+        {isLoading && <CircularProgress className={classes.searchLoader} />}
+      </Paper>
     </div>
   );
 }
