@@ -33,6 +33,20 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     right: 15,
     top: 13,
+  },
+  locationWrapper: {
+    maxWidth: 400,
+    paddingLeft: theme.spacing(7),
+    marginLeft: theme.spacing(-6),
+    alignItems: 'center',
+    borderRadius: `0px, 0px, ${theme.spacing(4)}px, ${theme.spacing(4)}px`
+  },
+  locationField: {
+    width: `100%`,
+    height: '100%'
+  },
+  locationIcon: {
+    margin: '16px'
   }
 }));
 

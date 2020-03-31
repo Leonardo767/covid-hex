@@ -6,16 +6,24 @@ import Search from "./components/Search";
 function Map(props) {
   // const {} = props;
   const [viewport, setViewport] = useState({
-    latitude: 37.8,
-    longitude: -122.4,
+    latitude: 33.9137,
+    longitude: -98.4934,
     width: "100vw",
     height: "100vh",
     zoom: 7
   });
 
+  const changeViewport = (lat, long) => {
+    setViewport(viewport => [{
+      ...viewport,
+      latitude: lat,
+      longitude: long
+    }])
+  }
+
   return (
     <div>
-      {/* <ReactMapGL
+      {/*<ReactMapGL
         {...viewport}
         // specify API token and controller for ReactMapGL
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
@@ -27,7 +35,7 @@ function Map(props) {
         <Source id="h3-hexes" type="geojson" data={hex_4}>
           <Layer {...hex_layer} />
         </Source>
-      </ReactMapGL> */}
+      </ReactMapGL>*/}
       <Search />
     </div>
   );

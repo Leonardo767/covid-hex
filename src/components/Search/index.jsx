@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Fab, Paper, InputBase, CircularProgress } from "@material-ui/core";
-import { SearchRounded } from "@material-ui/icons";
+import { Fab, Paper, InputBase, CircularProgress, TextField, MenuItem, MenuList } from "@material-ui/core";
+import { SearchRounded, Explore } from "@material-ui/icons";
 import clsx from "clsx";
 import useStyles from "./styles";
 import { useEffect } from "react";
@@ -15,6 +15,7 @@ function Search() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [locations, setLocations] = useState([])
 
   useEffect(() => {
     let shouldCallAPI = true;
@@ -27,6 +28,8 @@ function Search() {
           setIsLoading(true);
           const data = await MapBoxAPI.getCoordinates(searchText);
           console.log("data in api", data);
+
+          setLocations(data.features)
 
           // Make our API Call
 
@@ -55,7 +58,7 @@ function Search() {
       >
         <SearchRounded />
       </Fab>
-
+      <div>
       <Paper
         className={clsx(classes.wrapper, {
           [classes["wrapper--open"]]: isOpen
@@ -70,6 +73,22 @@ function Search() {
         />
         {isLoading && <CircularProgress className={classes.searchLoader} />}
       </Paper>
+
+      {isOpen && locations.length > 0 && (
+        <Paper
+          className={classes.locationWrapper}
+        >
+        <MenuList className={classes.locationWrapper}>
+          {isOpen && locations.map((location, i) => (
+            <MenuItem className={classes.locationField} key={i}>
+              <Explore className={classes.locationIcon}/>
+              {location.place_name}
+            </MenuItem>            
+          ))}
+        </MenuList>
+        </Paper>
+      )}
+      </div>
     </div>
   );
 }
