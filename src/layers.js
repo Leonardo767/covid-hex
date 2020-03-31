@@ -1,6 +1,6 @@
 import React from "react";
 import WebMercatorViewport from "viewport-mercator-project";
-import { geoToH3, kRing } from "h3-js";
+import { geoToH3, kRing, polyfill } from "h3-js";
 // @ts-ignore
 import geojson2h3 from "geojson2h3";
 
@@ -9,7 +9,7 @@ import geojson2h3 from "geojson2h3";
 
 function generate_hex_geojson(lat, lon, lvl) {
   const centerHexID = geoToH3(lat, lon, lvl);
-  const kRingHexIDs = kRing(centerHexID, 1);
+  const kRingHexIDs = kRing(centerHexID, 5);
   const Hexes = kRingHexIDs.reduce(
     (res, hexagon) => ({ ...res, [hexagon]: Math.random() }),
     {}
@@ -37,12 +37,13 @@ export const hex_layer = {
   }
 };
 
-function determine_resolution(height) {
-  resolution = height;
+function determine_resolution(viewport) {
+  const { _, height } = viewport;
+  const resolution = height;
   return resolution;
 }
 
-function getHexIdsInView(width, height, resolution) {
+function getHexIdsInView(viewport, resolution) {
   const { width, height } = viewport;
   const projection = new WebMercatorViewport(viewport);
   const [west, north] = projection.unproject([0, 0]);
@@ -51,7 +52,7 @@ function getHexIdsInView(width, height, resolution) {
   const ne = [north, east];
   const sw = [south, west];
   const se = [south, east];
-  const hexIDs = h3.polyfill([nw, ne, se, sw], resolution);
+  const hexIDs = polyfill([nw, ne, se, sw], resolution);
   return hexIDs;
 }
 
@@ -59,9 +60,9 @@ function hexRender(viewport) {
   // render necessary hex source/layer pairs
   // for a given bounding box and zoom level
   // =============================================
-  const { width, height } = viewport;
-  const resolution = determine_resolution(height);
-  hexIDs = getHexIdsInView(width, height, resolution);
+
+  const resolution = determine_resolution(viewport);
+  const hexIDs = getHexIdsInView(viewport, resolution);
   // Assign color values to each hex (default=0.5)
   const hexObjects = hexIDs.reduce(
     (res, hexagon) => ({ ...res, [hexagon]: 0.5 }),

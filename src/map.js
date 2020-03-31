@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
 import { hex_4, hex_6, hex_layer } from "./layers";
-import Search from "./components/Search";
+// import Search from "./components/Search";
 
 function Map(props) {
   // const {} = props;
@@ -38,7 +38,7 @@ function Map(props) {
           <Layer {...hex_layer} />
         </Source>
       </ReactMapGL>
-      <Search />
+      {/* <Search /> */}
     </div>
   );
 }
