@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
+import { Source, Layer } from "react-map-gl";
 import WebMercatorViewport from "viewport-mercator-project";
-import { geoToH3, kRing, polyfill } from "h3-js";
+import { polyfill } from "h3-js";
 // @ts-ignore
 import geojson2h3 from "geojson2h3";
 
 // ======================================================
 // GENERATE HEX GEOJSON
 
+/*
 function generate_hex_geojson(lat, lon, lvl) {
   const centerHexID = geoToH3(lat, lon, lvl);
   const kRingHexIDs = kRing(centerHexID, 5);
@@ -22,11 +24,11 @@ function generate_hex_geojson(lat, lon, lvl) {
   );
   return hexGeojson;
 }
+*/
 
-export const hex_4 = generate_hex_geojson(37.8, -122.4, 4);
-export const hex_6 = generate_hex_geojson(37.8, -122.4, 6);
+// const hex_6 = generate_hex_geojson(37.8, -122.4, 6);
 
-export const hex_layer = {
+const hex_layer = {
   id: "h3-hexes-layer",
   source: "h3-hexes",
   type: "fill",
@@ -37,32 +39,36 @@ export const hex_layer = {
   }
 };
 
-function determine_resolution(viewport) {
-  const { _, height } = viewport;
-  const resolution = height;
+function determine_resolution(zoom) {
+  const resolution = 5;
   return resolution;
 }
 
-function getHexIdsInView(viewport, resolution) {
-  const { width, height } = viewport;
-  const projection = new WebMercatorViewport(viewport);
+function getHexIdsInView(viewport) {
+  const latitude = viewport.viewport.latitude;
+  const longitude = viewport.viewport.longitude;
+  const zoom = viewport.viewport.zoom;
+  const options = { latitude: latitude, longitude: longitude };
+  const projection = new WebMercatorViewport(options);
   const [west, north] = projection.unproject([0, 0]);
-  const [east, south] = projection.unproject([width, height]);
+  const [east, south] = projection.unproject([1, 1]);
   const nw = [north, west];
   const ne = [north, east];
   const sw = [south, west];
   const se = [south, east];
+  // console.log(nw);
+  // console.log(se);
+  const resolution = determine_resolution(zoom);
   const hexIDs = polyfill([nw, ne, se, sw], resolution);
   return hexIDs;
 }
 
-function hexRender(viewport) {
+function HexRender(viewport) {
   // render necessary hex source/layer pairs
   // for a given bounding box and zoom level
   // =============================================
-
-  const resolution = determine_resolution(viewport);
-  const hexIDs = getHexIdsInView(viewport, resolution);
+  // const viewport_feed = useState({ width: 1, height: 1 });
+  const hexIDs = getHexIdsInView(viewport);
   // Assign color values to each hex (default=0.5)
   const hexObjects = hexIDs.reduce(
     (res, hexagon) => ({ ...res, [hexagon]: 0.5 }),
@@ -74,15 +80,12 @@ function hexRender(viewport) {
       value: hexObjects[hex]
     })
   );
-  // return a render() function, acts like component
-  // render params of form:
-  // <Source id="h3-hexes" type="geojson" data={hex_6}>
-  //   <Layer {...hex_layer} />
-  // </Source>
-  // <Source id="h3-hexes" type="geojson" data={hex_4}>
-  //   <Layer {...hex_layer} />
-  // </Source>
-  return 0;
+  console.log(hexGeojson);
+  return (
+    <Source id="h3-hexes" type="geojson" data={hexGeojson}>
+      <Layer {...hex_layer} />
+    </Source>
+  );
 }
 
-export default hexRender;
+export default HexRender;

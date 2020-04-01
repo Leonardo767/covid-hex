@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ReactMapGL, { Source, Layer } from "react-map-gl";
-import { hex_4, hex_6, hex_layer } from "./layers";
+import ReactMapGL from "react-map-gl";
+import HexRender from "./layers";
 // import Search from "./components/Search";
 
 function Map(props) {
@@ -10,7 +10,7 @@ function Map(props) {
     longitude: -98.4934,
     width: "100vw",
     height: "100vh",
-    zoom: 7
+    zoom: 10
   });
 
   const changeViewport = (lat, long) => {
@@ -31,12 +31,7 @@ function Map(props) {
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         onViewportChange={setViewport}
       >
-        <Source id="h3-hexes" type="geojson" data={hex_6}>
-          <Layer {...hex_layer} />
-        </Source>
-        <Source id="h3-hexes" type="geojson" data={hex_4}>
-          <Layer {...hex_layer} />
-        </Source>
+        <HexRender viewport={viewport}></HexRender>
       </ReactMapGL>
       {/* <Search /> */}
     </div>
