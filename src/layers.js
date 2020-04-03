@@ -1,32 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Source, Layer } from "react-map-gl";
 import WebMercatorViewport from "viewport-mercator-project";
 import { polyfill } from "h3-js";
 // @ts-ignore
 import geojson2h3 from "geojson2h3";
-
+import { unitedStates_rough } from "./data/nationalBoundaries";
 // ======================================================
 // GENERATE HEX GEOJSON
-
-/*
-function generate_hex_geojson(lat, lon, lvl) {
-  const centerHexID = geoToH3(lat, lon, lvl);
-  const kRingHexIDs = kRing(centerHexID, 5);
-  const Hexes = kRingHexIDs.reduce(
-    (res, hexagon) => ({ ...res, [hexagon]: Math.random() }),
-    {}
-  );
-  const hexGeojson = geojson2h3.h3SetToFeatureCollection(
-    Object.keys(Hexes),
-    hex => ({
-      value: Hexes[hex]
-    })
-  );
-  return hexGeojson;
-}
-*/
-
-// const hex_6 = generate_hex_geojson(37.8, -122.4, 6);
 
 const hex_layer = {
   id: "h3-hexes-layer",
@@ -40,15 +20,21 @@ const hex_layer = {
 };
 
 function determine_resolution(zoom) {
-  const resolution = 5;
-  return resolution;
+  const resolution = 2;
+  const scale_factor = 1.2;
+  return [scale_factor, resolution];
 }
 
 function getHexIdsInView(viewport) {
   const latitude = viewport.viewport.latitude;
   const longitude = viewport.viewport.longitude;
-  const zoom = viewport.viewport.zoom;
-  const options = { latitude: latitude, longitude: longitude };
+  const zoom = Math.floor(viewport.viewport.zoom);
+  const options = {
+    latitude: latitude,
+    longitude: longitude,
+    zoom: -6.5
+  };
+  const [scale_factor, resolution] = determine_resolution(zoom);
   const projection = new WebMercatorViewport(options);
   const [west, north] = projection.unproject([0, 0]);
   const [east, south] = projection.unproject([1, 1]);
@@ -56,10 +42,12 @@ function getHexIdsInView(viewport) {
   const ne = [north, east];
   const sw = [south, west];
   const se = [south, east];
-  // console.log(nw);
-  // console.log(se);
-  const resolution = determine_resolution(zoom);
-  const hexIDs = polyfill([nw, ne, se, sw], resolution);
+  console.log(zoom);
+  console.log(nw);
+  console.log(se);
+  // const hexIDs = polyfill([nw, ne, se, sw], resolution);
+  const hexIDs = polyfill(unitedStates_rough, resolution);
+  // filter by whether in country if zoomed out enough
   return hexIDs;
 }
 

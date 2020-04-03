@@ -10,7 +10,7 @@ function Map(props) {
     longitude: -98.4934,
     width: "100vw",
     height: "100vh",
-    zoom: 10
+    zoom: 3
   });
 
   const changeViewport = (lat, long) => {
