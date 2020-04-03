@@ -22,18 +22,17 @@ const hex_layer = {
 function determine_resolution(zoom) {
   // schedule resolution and render bound according to zoom lvl
   var resolution = 2;
-  var view_boundaries = -2;
-  switch (zoom) {
-    case zoom > 10:
-      resolution = 4;
-      break;
-    case zoom > 8:
-      resolution = 3;
-      break;
-    case zoom > 6:
-      resolution = 2;
-      break;
-  }
+  const view_boundaries = -2;
+  if (zoom < 6) {
+    resolution = 2;
+  } else if (zoom == 6) {
+    resolution = 3;
+  } else if (zoom == 7) {
+    resolution = 4;
+  } else if (zoom == 8) {
+    resolution = 4;
+  } else resolution = 5;
+  console.log(resolution);
   return [view_boundaries, resolution];
 }
 
@@ -45,7 +44,7 @@ function getHexIdsInView(viewport) {
   const options = {
     latitude: latitude,
     longitude: longitude,
-    zoom: -2
+    zoom: view_boundaries
   };
   const projection = new WebMercatorViewport(options);
   const [west, north] = projection.unproject([0, 0]);
