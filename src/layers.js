@@ -22,16 +22,23 @@ const hex_layer = {
 function determine_resolution(zoom) {
   // schedule resolution and render bound according to zoom lvl
   var resolution = 2;
-  const view_boundaries = -2;
+  var view_boundaries = -2;
   if (zoom < 6) {
     resolution = 2;
+    view_boundaries = -2;
   } else if (zoom == 6) {
     resolution = 3;
+    view_boundaries = -2;
   } else if (zoom == 7) {
     resolution = 4;
+    view_boundaries = -2;
   } else if (zoom == 8) {
     resolution = 4;
-  } else resolution = 5;
+    view_boundaries = -2;
+  } else {
+    resolution = 5;
+    view_boundaries = -2;
+  }
   console.log(resolution);
   return [view_boundaries, resolution];
 }
