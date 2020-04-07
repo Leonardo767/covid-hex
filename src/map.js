@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import ReactMapGL from "react-map-gl";
+import ReactMapGL, { FlyToInterpolator } from "react-map-gl";
 import HexRender from "./layers";
+import { easeCubic } from "d3-ease";
 // import Search from "./components/Search";
 
 function Map(props) {
@@ -10,16 +11,20 @@ function Map(props) {
     longitude: -98.4934,
     width: "100vw",
     height: "100vh",
-    zoom: 3
+    zoom: 3,
   });
 
   const changeViewport = (lat, long) => {
-    setViewport(viewport => [
+    setViewport((viewport) => [
       {
         ...viewport,
         latitude: lat,
-        longitude: long
-      }
+        longitude: long,
+        zoom: 4,
+        transitionDuration: 5000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: easeCubic,
+      },
     ]);
   };
 
