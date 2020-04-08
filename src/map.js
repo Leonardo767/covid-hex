@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
 import { hex_4, hex_6, hex_layer } from "./layers";
 import Search from "./components/Search";
@@ -12,20 +12,26 @@ function Map(props) {
     height: "100vh",
     zoom: 7
   });
+  const [location, setLocation] = useState(null);
+  const _map = useRef(null);
 
-  const changeViewport = (lat, long) => {
-    setViewport(viewport => [{
-      ...viewport,
-      latitude: lat,
-      longitude: long
-    }])
-  }
+  const onSearchChange = (location, longitude, latitude) => {
+    console.log(longitude + " " + latitude);
+    setLocation(location);
+    setViewport(viewport => [
+      {
+        ...viewport,
+        latitude,
+        longitude
+      }
+    ]);
+  };
 
   return (
     <div>
-      {/*<ReactMapGL
+      <ReactMapGL
+        ref={_map}
         {...viewport}
-        // specify API token and controller for ReactMapGL
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         onViewportChange={setViewport}
       >
@@ -35,8 +41,8 @@ function Map(props) {
         <Source id="h3-hexes" type="geojson" data={hex_4}>
           <Layer {...hex_layer} />
         </Source>
-      </ReactMapGL>*/}
-      <Search />
+      </ReactMapGL>
+      <Search location={location} onChange={onSearchChange} />
     </div>
   );
 }
