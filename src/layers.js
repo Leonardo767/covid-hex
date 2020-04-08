@@ -26,20 +26,20 @@ function determine_resolution(zoom) {
   if (zoom < 6) {
     resolution = 2;
     view_boundaries = -2;
-  } else if (zoom == 6) {
+  } else if (zoom === 6) {
     resolution = 3;
     view_boundaries = -2;
-  } else if (zoom == 7) {
+  } else if (zoom === 7) {
     resolution = 4;
     view_boundaries = -2;
-  } else if (zoom == 8) {
+  } else if (zoom === 8) {
     resolution = 4;
     view_boundaries = -2;
   } else {
     resolution = 5;
     view_boundaries = -2;
   }
-  console.log(resolution);
+
   return [view_boundaries, resolution];
 }
 
@@ -60,14 +60,15 @@ function getHexIdsInView(viewport) {
   const ne = [north, east];
   const sw = [south, west];
   const se = [south, east];
-  console.log(zoom);
+
   // console.log(nw);
   // console.log(se);
   // filter by whether in country if zoomed out enough
+  let hexIDs;
   if (zoom < 6) {
-    var hexIDs = filterWithinCountry("USA");
+    hexIDs = filterWithinCountry("USA");
   } else {
-    var hexIDs = polyfill([nw, ne, se, sw], resolution);
+    hexIDs = polyfill([nw, ne, se, sw], resolution);
   }
   // console.log(hexIDs);
   return hexIDs;

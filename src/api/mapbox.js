@@ -48,14 +48,18 @@ class MapBoxAPI {
   };
 }
 
-class Point {
+export class Point {
   constructor(longitude, latitude) {
     this.longitude = longitude;
     this.latitude = latitude;
   }
+
+  toArray() {
+    return [this.longitude, this.latitude];
+  }
 }
 
-class Place {
+export class Place {
   /**
    * Typically these are cities, villages, municipalities, etc.
    * They’re usually features used in postal addressing, and are
@@ -66,7 +70,7 @@ class Place {
    * @param {string} param.text Easy to read title.
    * @param {string} param.place_name Full title.
    * @param {object} param.properties Includes wiki data.
-   * @param {Point[]} param.boudingBox Array of points that give a box around the center of the place.
+   * @param {Point[]} param.bbox Array of points that give a box around the center of the place.
    * @param {any} param.geometry
    */
   constructor({ id, text, place_name, properties, bbox, center, geometry }) {
@@ -74,7 +78,7 @@ class Place {
     this.text = text;
     this.place_name = place_name;
     this.properties = properties;
-    this.boudingBox = [
+    this.boundingBox = [
       new Point(bbox[0], bbox[1]),
       new Point(bbox[2], bbox[3])
     ];
@@ -88,7 +92,7 @@ class Place {
   }
 }
 
-class PointOfInterest {
+export class PointOfInterest {
   /**
    * Points of interest.
    * These include restaurants, stores, concert venues, parks, museums, etc.
@@ -115,7 +119,7 @@ class PointOfInterest {
   }
 }
 
-class Address {
+export class Address {
   /**
    * Individual residential or business addresses
    * @param {object} param
@@ -143,10 +147,10 @@ class Address {
   }
 }
 
-class Country {
+export class Country {
   /**
-   * Generally recognized countries or, in some cases like Hong Kong, 
-   * an area of quasi-national administrative status that has been given 
+   * Generally recognized countries or, in some cases like Hong Kong,
+   * an area of quasi-national administrative status that has been given
    * a designated country code under ISO 3166-1
    * @param {object} param
    * @param {string} param.id Id.
@@ -155,8 +159,18 @@ class Country {
    * @param {object} param.properties Includes wiki data.
    * @param {Point} param.center Absolute location.
    * @param {any} param.geometry
+   * @param {Point[]} param.boundingBox Array of points that give a box around the center of the place.
    */
-  constructor({ id, address, text, place_name, properties, center, geometry }) {
+  constructor({
+    id,
+    address,
+    text,
+    place_name,
+    properties,
+    center,
+    geometry,
+    bbox
+  }) {
     this.id = id;
     this.address = address;
     this.text = text;
@@ -164,6 +178,10 @@ class Country {
     this.properties = properties;
     this.center = new Point(center[0], center[1]);
     this.geometry = geometry;
+    this.boundingBox = [
+      new Point(bbox[0], bbox[1]),
+      new Point(bbox[2], bbox[3])
+    ];
     this.icon = <PublicRounded />;
   }
 
@@ -172,7 +190,7 @@ class Country {
   }
 }
 
-class Region {
+export class Region {
   /**
    * Top-level sub-national administrative features, such as states in the United States or provinces in Canada or China
    * @param {object} param
@@ -182,8 +200,18 @@ class Region {
    * @param {object} param.properties Includes wiki data.
    * @param {Point} param.center Absolute location.
    * @param {any} param.geometry
+   * @param {Point[]} bbox Bounding Area
    */
-  constructor({ id, address, text, place_name, properties, center, geometry }) {
+  constructor({
+    id,
+    address,
+    text,
+    place_name,
+    properties,
+    center,
+    geometry,
+    bbox
+  }) {
     this.id = id;
     this.address = address;
     this.text = text;
@@ -191,6 +219,10 @@ class Region {
     this.properties = properties;
     this.center = new Point(center[0], center[1]);
     this.geometry = geometry;
+    this.boundingBox = [
+      new Point(bbox[0], bbox[1]),
+      new Point(bbox[2], bbox[3])
+    ];
     this.icon = <FlagRounded />;
   }
 
@@ -199,7 +231,7 @@ class Region {
   }
 }
 
-class PostCode {
+export class PostCode {
   /**
    * Postal codes used in country-specific national addressing systems
    * @param {object} param
@@ -210,8 +242,18 @@ class PostCode {
    * @param {object} param.properties Includes wiki data.
    * @param {Point} param.center Absolute location.
    * @param {any} param.geometry
+   * @param {Point[]} bbox Bounding Area
    */
-  constructor({ id, address, text, place_name, properties, center, geometry }) {
+  constructor({
+    id,
+    address,
+    text,
+    place_name,
+    properties,
+    center,
+    geometry,
+    bbox
+  }) {
     this.id = id;
     this.address = address;
     this.text = text;
@@ -219,6 +261,10 @@ class PostCode {
     this.properties = properties;
     this.center = new Point(center[0], center[1]);
     this.geometry = geometry;
+    this.boundingBox = [
+      new Point(bbox[0], bbox[1]),
+      new Point(bbox[2], bbox[3])
+    ];
     this.icon = <ExploreRounded />;
   }
 
@@ -227,9 +273,9 @@ class PostCode {
   }
 }
 
-class District {
+export class District {
   /**
-   * Features that are smaller than top-level administrative features but typically larger than cities, 
+   * Features that are smaller than top-level administrative features but typically larger than cities,
    * in countries that use such an additional layer in postal addressing (for example, prefectures in China).
    * @param {object} param
    * @param {string} param.id Id.
@@ -238,8 +284,18 @@ class District {
    * @param {object} param.properties Includes wiki data.
    * @param {Point} param.center Absolute location.
    * @param {any} param.geometry
+   * @param {Point[]} param.bbox
    */
-  constructor({ id, address, text, place_name, properties, center, geometry }) {
+  constructor({
+    id,
+    address,
+    text,
+    place_name,
+    properties,
+    center,
+    geometry,
+    bbox
+  }) {
     this.id = id;
     this.address = address;
     this.text = text;
@@ -247,6 +303,10 @@ class District {
     this.properties = properties;
     this.center = new Point(center[0], center[1]);
     this.geometry = geometry;
+    this.boundingBox = [
+      new Point(bbox[0], bbox[1]),
+      new Point(bbox[2], bbox[3])
+    ];
     this.icon = <ApartmentRounded />;
   }
 
@@ -255,11 +315,11 @@ class District {
   }
 }
 
-class Locality {
+export class Locality {
   /**
-   * Official sub-city features present in countries where such an additional 
-   * administrative layer is used in postal addressing, or where such features 
-   * are commonly referred to in local parlance. Examples include city districts 
+   * Official sub-city features present in countries where such an additional
+   * administrative layer is used in postal addressing, or where such features
+   * are commonly referred to in local parlance. Examples include city districts
    * in Brazil and Chile and arrondissements in France
    * @param {object} param
    * @param {string} param.id Id.
@@ -268,8 +328,18 @@ class Locality {
    * @param {object} param.properties Includes wiki data.
    * @param {Point} param.center Absolute location.
    * @param {any} param.geometry
+   * @param {Point[]} param.bbox
    */
-  constructor({ id, address, text, place_name, properties, center, geometry }) {
+  constructor({
+    id,
+    address,
+    text,
+    place_name,
+    properties,
+    center,
+    geometry,
+    bbox
+  }) {
     this.id = id;
     this.address = address;
     this.text = text;
@@ -277,6 +347,10 @@ class Locality {
     this.properties = properties;
     this.center = new Point(center[0], center[1]);
     this.geometry = geometry;
+    this.boundingBox = [
+      new Point(bbox[0], bbox[1]),
+      new Point(bbox[2], bbox[3])
+    ];
     this.icon = <RoomRounded />;
   }
 
@@ -285,9 +359,9 @@ class Locality {
   }
 }
 
-class Neighborhood {
+export class Neighborhood {
   /**
-   * Colloquial sub-city features often referred to in local parlance. 
+   * Colloquial sub-city features often referred to in local parlance.
    * Unlike locality features, these typically lack official status and
    * may lack universally agreed-upon boundaries.
    * @param {object} param
@@ -297,8 +371,18 @@ class Neighborhood {
    * @param {object} param.properties Includes wiki data.
    * @param {Point} param.center Absolute location.
    * @param {any} param.geometry
+   * @param {Point[]} bbox Bounding area
    */
-  constructor({ id, address, text, place_name, properties, center, geometry }) {
+  constructor({
+    id,
+    address,
+    text,
+    place_name,
+    properties,
+    center,
+    geometry,
+    bbox
+  }) {
     this.id = id;
     this.address = address;
     this.text = text;
@@ -306,6 +390,10 @@ class Neighborhood {
     this.properties = properties;
     this.center = new Point(center[0], center[1]);
     this.geometry = geometry;
+    this.boundingBox = [
+      new Point(bbox[0], bbox[1]),
+      new Point(bbox[2], bbox[3])
+    ];
     this.icon = <HomeRounded />;
   }
 

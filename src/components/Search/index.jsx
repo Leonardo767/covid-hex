@@ -70,7 +70,7 @@ function Search(props) {
   }, [isOpen]);
 
   const handleLocationClick = location => () => {
-    onChange(location, location.center.longitude, location.center.latitude);
+    onChange(location, location.center.longitude, location.center.latitude, location.boundingBox);
     setIsMenuOpen(false);
   };
 
