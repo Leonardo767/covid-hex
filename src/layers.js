@@ -15,8 +15,8 @@ const hex_layer = {
   interactive: false,
   paint: {
     "fill-opacity": 0.25,
-    "fill-outline-color": "rgba(0,0,0,0.5)"
-  }
+    "fill-outline-color": "rgba(0,0,0,0.5)",
+  },
 };
 
 function determine_resolution(zoom) {
@@ -26,13 +26,13 @@ function determine_resolution(zoom) {
   if (zoom < 6) {
     resolution = 2;
     view_boundaries = -2;
-  } else if (zoom == 6) {
+  } else if (zoom === 6) {
     resolution = 3;
     view_boundaries = -2;
-  } else if (zoom == 7) {
+  } else if (zoom === 7) {
     resolution = 4;
     view_boundaries = -2;
-  } else if (zoom == 8) {
+  } else if (zoom === 8) {
     resolution = 4;
     view_boundaries = -2;
   } else {
@@ -51,7 +51,7 @@ function getHexIdsInView(viewport) {
   const options = {
     latitude: latitude,
     longitude: longitude,
-    zoom: view_boundaries
+    zoom: view_boundaries,
   };
   const projection = new WebMercatorViewport(options);
   const [west, north] = projection.unproject([0, 0]);
@@ -86,8 +86,8 @@ function HexRender(viewport) {
   );
   const hexGeojson = geojson2h3.h3SetToFeatureCollection(
     Object.keys(hexObjects),
-    hex => ({
-      value: hexObjects[hex]
+    (hex) => ({
+      value: hexObjects[hex],
     })
   );
   // console.log(hexGeojson);
