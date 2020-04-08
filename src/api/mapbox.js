@@ -40,7 +40,7 @@ class MapBoxAPI {
 
   static getCoordinates = async location => {
     const response = await fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${location}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${location}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}&country=US`
     );
 
     const data = await response.json();
