@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
-import ReactMapGL, { Source, Layer } from "react-map-gl";
-import { hex_4, hex_6, hex_layer } from "./layers";
+import ReactMapGL, { FlyToInterpolator } from "react-map-gl";
+import { easeCubic } from "d3-ease";
 import Search from "./components/Search";
+import HexRender from "./layers";
 
-function Map(props) {
+function Map() {
   // const {} = props;
   const [viewport, setViewport] = useState({
     latitude: 33.9137,
@@ -16,16 +17,19 @@ function Map(props) {
   const _map = useRef(null);
 
   const onSearchChange = (location, longitude, latitude) => {
-    console.log(longitude + " " + latitude);
     setLocation(location);
     setViewport(viewport => [
       {
         ...viewport,
         latitude,
-        longitude
+        longitude,
+        zoom: 4,
+        transitionDuration: 5000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: easeCubic,
       }
     ]);
-  };
+  }
 
   return (
     <div>
@@ -35,12 +39,7 @@ function Map(props) {
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         onViewportChange={setViewport}
       >
-        <Source id="h3-hexes" type="geojson" data={hex_6}>
-          <Layer {...hex_layer} />
-        </Source>
-        <Source id="h3-hexes" type="geojson" data={hex_4}>
-          <Layer {...hex_layer} />
-        </Source>
+        <HexRender viewport={viewport}></HexRender>
       </ReactMapGL>
       <Search location={location} onChange={onSearchChange} />
     </div>

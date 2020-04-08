@@ -10,6 +10,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "clsx": "^1.1.0",
+    "d3-ease": "^1.0.6",
     "geojson2h3": "^1.0.1",
     "h3-js": "^3.6.3",
     "h3-reactnative": "git+https://github.com/realPrimoh/h3-reactnative.git",
