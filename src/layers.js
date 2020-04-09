@@ -43,7 +43,7 @@ function determine_resolution(zoom) {
   return [view_boundaries, resolution];
 }
 
-function getHexIdsInView(viewport) {
+function getHexIdsInView(viewport, countrySelected) {
   const latitude = viewport.viewport.latitude;
   const longitude = viewport.viewport.longitude;
   const zoom = Math.floor(viewport.viewport.zoom);
@@ -60,13 +60,14 @@ function getHexIdsInView(viewport) {
   const ne = [north, east];
   const sw = [south, west];
   const se = [south, east];
+  console.log(zoom);
 
   // console.log(nw);
   // console.log(se);
   // filter by whether in country if zoomed out enough
   let hexIDs;
-  if (zoom < 6) {
-    hexIDs = filterWithinCountry("USA");
+  if (zoom < 6 || countrySelected === "Hawaii") {
+    hexIDs = filterWithinCountry("Hawaii");
   } else {
     hexIDs = polyfill([nw, ne, se, sw], resolution);
   }
@@ -74,12 +75,12 @@ function getHexIdsInView(viewport) {
   return hexIDs;
 }
 
-function HexRender(viewport) {
+function HexRender(viewport, countrySelected) {
   // render necessary hex source/layer pairs
   // for a given bounding box and zoom level
   // =============================================
   // const viewport_feed = useState({ width: 1, height: 1 });
-  const hexIDs = getHexIdsInView(viewport);
+  const hexIDs = getHexIdsInView(viewport, countrySelected);
   // Assign color values to each hex (default=0.5)
   const hexObjects = hexIDs.reduce(
     (res, hexagon) => ({ ...res, [hexagon]: 0.5 }),
