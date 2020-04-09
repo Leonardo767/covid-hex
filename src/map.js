@@ -29,6 +29,22 @@ class Map extends React.Component {
   }
 
   setViewport = (viewport) => {
+    const mapBounds =
+      countryInfo["default"][this.props.countrySelected]["bounds"];
+    const minLat = mapBounds[0][0];
+    const maxLat = mapBounds[1][0];
+    const minLon = mapBounds[0][1];
+    const maxLon = mapBounds[1][1];
+    if (viewport.longitude < minLon) {
+      viewport.longitude = minLon;
+    } else if (viewport.longitude > maxLon) {
+      viewport.longitude = maxLon;
+    }
+    if (viewport.latitude < minLat) {
+      viewport.latitude = minLat;
+    } else if (viewport.latitude > maxLat) {
+      viewport.latitude = maxLat;
+    }
     this.setState({ viewport });
   };
 

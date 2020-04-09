@@ -18,7 +18,11 @@
     ],
     "centerLat": 39,
     "centerLon": -97,
-    "centerZoom": 3
+    "centerZoom": 3.5,
+    "bounds": [
+      [22, -127],
+      [51, -50]
+    ]
   },
   "alaska": {
     "hexRenderBounds": [

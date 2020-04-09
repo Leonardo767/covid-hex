@@ -95,17 +95,6 @@ function getHexGeoJson(viewport, countrySelected) {
 }
 
 function HexRender(props) {
-  // render necessary hex source/layer pairs
-  // for a given bounding box and zoom level
-  // =============================================
-  // const viewport_feed = useState({ width: 1, height: 1 });
-  // const getCountrySelected = (props) => {
-  //   return props.countrySelected;
-  // };
-  // const countrySelected = getCountrySelected();
-  // console.log(props);
-
-  // console.log(hexGeojson);
   return (
     <Source
       id="h3-hexes"
