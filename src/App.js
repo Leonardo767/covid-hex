@@ -10,7 +10,7 @@ function App(props) {
   return (
     <div className="App">
       <ThemeProvider theme={appTheme}>
-        <Map countrySelected={"usa"} />
+        <Map countrySelected={"hawaii"} />
       </ThemeProvider>
     </div>
   );

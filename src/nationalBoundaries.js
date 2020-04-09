@@ -9,7 +9,7 @@ function filterWithinCountry(countrySelected) {
   var countryBounds =
     countryInfo["default"][countrySelected]["hexRenderBounds"];
   var hex_resolution = 2;
-  if (countrySelected === "Hawaii") {
+  if (countrySelected === "hawaii") {
     hex_resolution = 3;
   }
   // only large hexes (=2) are filtered to get a rough shape at the outer zoom
