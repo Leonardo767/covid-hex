@@ -7,6 +7,7 @@ import { easeCubic } from "d3-ease";
 import Search from "./components/Search";
 import HexRender from "./layers";
 import { Point } from "./api/mapbox"; // eslint-disable-line
+import * as countryInfo from "./data/map-settings-by-country.json";
 
 class Map extends React.Component {
   // const {} = props;
@@ -15,11 +16,13 @@ class Map extends React.Component {
     this._map = createRef();
     this.state = {
       viewport: {
-        latitude: 33.9137,
-        longitude: -98.4934,
+        latitude:
+          countryInfo["default"][this.props.countrySelected]["centerLat"],
+        longitude:
+          countryInfo["default"][this.props.countrySelected]["centerLon"],
         width: "100vw",
         height: "100vh",
-        zoom: 7,
+        zoom: countryInfo["default"][this.props.countrySelected]["centerZoom"],
       },
       location: null,
     };

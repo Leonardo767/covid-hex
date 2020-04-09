@@ -5,6 +5,7 @@ import { polyfill } from "h3-js";
 // @ts-ignore
 import geojson2h3 from "geojson2h3";
 import filterWithinCountry from "./nationalBoundaries";
+import * as countryInfo from "./data/map-settings-by-country.json";
 // ======================================================
 // GENERATE HEX GEOJSON
 

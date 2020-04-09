@@ -1,13 +1,11 @@
 import { polyfill } from "h3-js";
 import * as countryInfo from "./data/map-settings-by-country.json";
-// const countryInfo = require("./data/map-settings-by-country.json");
 
 function filterWithinCountry(countrySelected) {
   // console.log(countryInfo);
-  console.log(countrySelected);
-  console.log(countryInfo["default"][countrySelected]["hexRenderBounds"]);
-  var countryBounds =
-    countryInfo["default"][countrySelected]["hexRenderBounds"];
+  // console.log(countrySelected);
+  const countryChosen = countryInfo["default"][countrySelected];
+  const countryBounds = countryChosen["hexRenderBounds"];
   var hex_resolution = 2;
   if (countrySelected === "hawaii") {
     hex_resolution = 3;
