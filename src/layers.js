@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Source, Layer } from "react-map-gl";
 import WebMercatorViewport from "viewport-mercator-project";
 import { polyfill } from "h3-js";
 // @ts-ignore
 import geojson2h3 from "geojson2h3";
-import filterWithinCountry from "./data/nationalBoundaries";
+import filterWithinCountry from "./nationalBoundaries";
 // ======================================================
 // GENERATE HEX GEOJSON
 
@@ -44,9 +44,9 @@ function determine_resolution(zoom) {
 }
 
 function getHexIdsInView(viewport, countrySelected) {
-  const latitude = viewport.viewport.latitude;
-  const longitude = viewport.viewport.longitude;
-  const zoom = Math.floor(viewport.viewport.zoom);
+  const latitude = viewport.latitude;
+  const longitude = viewport.longitude;
+  const zoom = Math.floor(viewport.zoom);
   const [view_boundaries, resolution] = determine_resolution(zoom);
   const options = {
     latitude: latitude,
@@ -66,8 +66,8 @@ function getHexIdsInView(viewport, countrySelected) {
   // console.log(se);
   // filter by whether in country if zoomed out enough
   let hexIDs;
-  if (zoom < 6 || countrySelected === "Hawaii") {
-    hexIDs = filterWithinCountry("Hawaii");
+  if (zoom < 6) {
+    hexIDs = filterWithinCountry(countrySelected);
   } else {
     hexIDs = polyfill([nw, ne, se, sw], resolution);
   }
@@ -75,11 +75,9 @@ function getHexIdsInView(viewport, countrySelected) {
   return hexIDs;
 }
 
-function HexRender(viewport, countrySelected) {
-  // render necessary hex source/layer pairs
-  // for a given bounding box and zoom level
-  // =============================================
-  // const viewport_feed = useState({ width: 1, height: 1 });
+function getHexGeoJson(viewport, countrySelected) {
+  // console.log(countrySelected);
+  // console.log(viewport);
   const hexIDs = getHexIdsInView(viewport, countrySelected);
   // Assign color values to each hex (default=0.5)
   const hexObjects = hexIDs.reduce(
@@ -92,9 +90,27 @@ function HexRender(viewport, countrySelected) {
       value: hexObjects[hex],
     })
   );
+  return hexGeojson;
+}
+
+function HexRender(props) {
+  // render necessary hex source/layer pairs
+  // for a given bounding box and zoom level
+  // =============================================
+  // const viewport_feed = useState({ width: 1, height: 1 });
+  // const getCountrySelected = (props) => {
+  //   return props.countrySelected;
+  // };
+  // const countrySelected = getCountrySelected();
+  // console.log(props);
+
   // console.log(hexGeojson);
   return (
-    <Source id="h3-hexes" type="geojson" data={hexGeojson}>
+    <Source
+      id="h3-hexes"
+      type="geojson"
+      data={getHexGeoJson(props.viewport, props.countrySelected)}
+    >
       <Layer {...hex_layer} />
     </Source>
   );
