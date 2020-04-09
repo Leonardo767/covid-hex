@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { createRef } from "react";
 import ReactMapGL, {
   FlyToInterpolator,
   WebMercatorViewport,
@@ -16,10 +16,8 @@ class Map extends React.Component {
     this._map = createRef();
     this.state = {
       viewport: {
-        latitude:
-          countryInfo["default"][this.props.countrySelected]["centerLat"],
-        longitude:
-          countryInfo["default"][this.props.countrySelected]["centerLon"],
+        latitude: this.getCenterCoords()[0],
+        longitude: this.getCenterCoords()[1],
         width: "100vw",
         height: "100vh",
         zoom: countryInfo["default"][this.props.countrySelected]["centerZoom"],
@@ -28,23 +26,40 @@ class Map extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.setMapBoundaries();
+  }
+
+  setMapBoundaries = () => {
+    const [[minLat, minLon], [maxLat, maxLon]] = countryInfo["default"][
+      this.props.countrySelected
+    ]["bounds"];
+    const maxZoom =
+      countryInfo["default"][this.props.countrySelected]["centerZoom"] + 0.1;
+    // access map reference
+    const myMap = this._map.getMap();
+    myMap.setMaxBounds([
+      [minLon, minLat],
+      [maxLon, maxLat],
+    ]);
+    // myMap.setMaxZoom(maxZoom);
+  };
+
+  getCenterCoords() {
+    const [[minLat, minLon], [maxLat, maxLon]] = countryInfo["default"][
+      this.props.countrySelected
+    ]["bounds"];
+    const centerLat = (minLat + maxLat) / 2;
+    const centerLon = (minLon + maxLon) / 2;
+    return [centerLat, centerLon];
+  }
+
   setViewport = (viewport) => {
-    const mapBounds =
-      countryInfo["default"][this.props.countrySelected]["bounds"];
-    const minLat = mapBounds[0][0];
-    const maxLat = mapBounds[1][0];
-    const minLon = mapBounds[0][1];
-    const maxLon = mapBounds[1][1];
-    if (viewport.longitude < minLon) {
-      viewport.longitude = minLon;
-    } else if (viewport.longitude > maxLon) {
-      viewport.longitude = maxLon;
-    }
-    if (viewport.latitude < minLat) {
-      viewport.latitude = minLat;
-    } else if (viewport.latitude > maxLat) {
-      viewport.latitude = maxLat;
-    }
+    // const maxZoom =
+    //   countryInfo["default"][this.props.countrySelected]["centerZoom"];
+    // if (viewport.zoom < maxZoom) {
+    //   viewport.zoom = maxZoom;
+    // }
     this.setState({ viewport });
   };
 
@@ -96,14 +111,15 @@ class Map extends React.Component {
   };
 
   render() {
-    // console.log(this.props.countrySelected);
     return (
       <div>
         <ReactMapGL
-          ref={this._map}
           {...this.state.viewport}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
           onViewportChange={this.setViewport}
+          dragRotate={false}
+          touchRotate={false}
+          ref={(map) => (this._map = map)}
         >
           <HexRender
             viewport={this.state.viewport}

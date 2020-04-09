@@ -18,10 +18,10 @@
     ],
     "centerLat": 39,
     "centerLon": -97,
-    "centerZoom": 3.5,
+    "centerZoom": 3.7,
     "bounds": [
-      [22, -127],
-      [51, -50]
+      [10, -150],
+      [60, -50]
     ]
   },
   "alaska": {
@@ -39,11 +39,11 @@
       [51, -168]
     ],
     "centerLat": 63,
-    "centerLon": -150,
-    "centerZoom": 3,
+    "centerLon": -140,
+    "centerZoom": 4,
     "bounds": [
-      [53, -170],
-      [72, -130]
+      [45, -179],
+      [75, -110]
     ]
   },
   "hawaii": {
