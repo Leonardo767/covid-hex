@@ -40,7 +40,11 @@
     ],
     "centerLat": 63,
     "centerLon": -150,
-    "centerZoom": 3
+    "centerZoom": 3,
+    "bounds": [
+      [53, -170],
+      [72, -130]
+    ]
   },
   "hawaii": {
     "hexRenderBounds": [
@@ -52,7 +56,11 @@
     ],
     "centerLat": 21,
     "centerLon": -157.2,
-    "centerZoom": 6
+    "centerZoom": 6,
+    "bounds": [
+      [18, -160],
+      [22, -153]
+    ]
   },
   "world": {
     "hexRenderBounds": [
