@@ -4,7 +4,7 @@ import WebMercatorViewport from "viewport-mercator-project";
 import { polyfill } from "h3-js";
 // @ts-ignore
 import geojson2h3 from "geojson2h3";
-import filterWithinCountry from "./nationalBoundaries";
+import renderAllLargeHexes from "./nationalBoundaries";
 import * as countryInfo from "./data/map-settings-by-country.json";
 // ======================================================
 // GENERATE HEX GEOJSON
@@ -68,7 +68,7 @@ function getHexIdsInView(viewport, countrySelected) {
   // filter by whether in country if zoomed out enough
   let hexIDs;
   if (zoom < 6) {
-    hexIDs = filterWithinCountry(countrySelected);
+    hexIDs = renderAllLargeHexes(countrySelected);
   } else {
     hexIDs = polyfill([nw, ne, se, sw], resolution);
   }

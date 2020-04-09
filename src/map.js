@@ -13,7 +13,7 @@ class Map extends React.Component {
   // const {} = props;
   constructor(props) {
     super(props);
-    this._map = createRef();
+    // this._map = createRef();
     this.state = {
       viewport: {
         latitude: this.getCenterCoords()[0],
@@ -26,24 +26,24 @@ class Map extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.setMapBoundaries();
-  }
+  // componentDidMount() {
+  //   this.setMapBoundaries();
+  // }
 
-  setMapBoundaries = () => {
-    const [[minLat, minLon], [maxLat, maxLon]] = countryInfo["default"][
-      this.props.countrySelected
-    ]["bounds"];
-    const maxZoom =
-      countryInfo["default"][this.props.countrySelected]["centerZoom"] + 0.1;
-    // access map reference
-    const myMap = this._map.getMap();
-    myMap.setMaxBounds([
-      [minLon, minLat],
-      [maxLon, maxLat],
-    ]);
-    // myMap.setMaxZoom(maxZoom);
-  };
+  // setMapBoundaries = () => {
+  //   const [[minLat, minLon], [maxLat, maxLon]] = countryInfo["default"][
+  //     this.props.countrySelected
+  //   ]["bounds"];
+  //   const maxZoom =
+  //     countryInfo["default"][this.props.countrySelected]["centerZoom"] + 0.1;
+  //   // access map reference
+  //   const myMap = this._map.getMap();
+  //   myMap.setMaxBounds([
+  //     [minLon, minLat],
+  //     [maxLon, maxLat],
+  //   ]);
+  //   // myMap.setMaxZoom(maxZoom);
+  // };
 
   getCenterCoords() {
     const [[minLat, minLon], [maxLat, maxLon]] = countryInfo["default"][
@@ -55,11 +55,6 @@ class Map extends React.Component {
   }
 
   setViewport = (viewport) => {
-    // const maxZoom =
-    //   countryInfo["default"][this.props.countrySelected]["centerZoom"];
-    // if (viewport.zoom < maxZoom) {
-    //   viewport.zoom = maxZoom;
-    // }
     this.setState({ viewport });
   };
 
@@ -119,7 +114,7 @@ class Map extends React.Component {
           onViewportChange={this.setViewport}
           dragRotate={false}
           touchRotate={false}
-          ref={(map) => (this._map = map)}
+          // ref={(map) => (this._map = map)}
         >
           <HexRender
             viewport={this.state.viewport}
