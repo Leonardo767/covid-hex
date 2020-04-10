@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Source, Layer } from "react-map-gl";
 import WebMercatorViewport from "viewport-mercator-project";
-import { polyfill } from "h3-js";
+import { polyfill, h3ToParent } from "h3-js";
 // @ts-ignore
 import geojson2h3 from "geojson2h3";
 import renderAllLargeHexes from "./nationalBoundaries";
@@ -66,25 +66,31 @@ function getHexIdsInView(viewport, countrySelected) {
   // console.log(nw);
   // console.log(se);
   // filter by whether in country if zoomed out enough
-  let hexIDs;
+  const hexesInCountry = renderAllLargeHexes(countrySelected);
+  const hexesInCountryDict = {};
+  hexesInCountry.forEach((id) => (hexesInCountryDict[id] = true));
   if (zoom < 6) {
-    hexIDs = renderAllLargeHexes(countrySelected);
+    var hexIDs = hexesInCountry;
   } else {
-    hexIDs = polyfill([nw, ne, se, sw], resolution);
+    var hexIDs = polyfill([nw, ne, se, sw], resolution);
+    // hexIDs.forEach((id) =>
+    //   console.log(h3ToParent(id, 2) in hexesInCountryDict)
+    // );
+    hexIDs = hexIDs.filter((id) => h3ToParent(id, 2) in hexesInCountryDict);
   }
   // console.log(hexIDs);
   return hexIDs;
 }
 
 function getHexGeoJson(viewport, countrySelected) {
-  // console.log(countrySelected);
-  // console.log(viewport);
+  // select proper hexIDs
   const hexIDs = getHexIdsInView(viewport, countrySelected);
   // Assign color values to each hex (default=0.5)
   const hexObjects = hexIDs.reduce(
     (res, hexagon) => ({ ...res, [hexagon]: 0.5 }),
     {}
   );
+  // build hex geojsons
   const hexGeojson = geojson2h3.h3SetToFeatureCollection(
     Object.keys(hexObjects),
     (hex) => ({
