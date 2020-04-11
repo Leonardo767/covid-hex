@@ -61,11 +61,7 @@ function getHexIdsInView(viewport, countrySelected) {
   const ne = [north, east];
   const sw = [south, west];
   const se = [south, east];
-  console.log(zoom);
 
-  // console.log(nw);
-  // console.log(se);
-  // filter by whether in country if zoomed out enough
   const hexesInCountry = renderAllLargeHexes(countrySelected);
   const hexesInCountryDict = {};
   hexesInCountry.forEach((id) => (hexesInCountryDict[id] = true));
@@ -73,12 +69,8 @@ function getHexIdsInView(viewport, countrySelected) {
     var hexIDs = hexesInCountry;
   } else {
     var hexIDs = polyfill([nw, ne, se, sw], resolution);
-    // hexIDs.forEach((id) =>
-    //   console.log(h3ToParent(id, 2) in hexesInCountryDict)
-    // );
     hexIDs = hexIDs.filter((id) => h3ToParent(id, 2) in hexesInCountryDict);
   }
-  // console.log(hexIDs);
   return hexIDs;
 }
 
