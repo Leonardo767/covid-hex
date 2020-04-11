@@ -5,7 +5,6 @@ import { polyfill, h3ToParent } from "h3-js";
 // @ts-ignore
 import geojson2h3 from "geojson2h3";
 import renderAllLargeHexes from "./nationalBoundaries";
-import * as countryInfo from "./data/map-settings-by-country.json";
 // ======================================================
 // GENERATE HEX GEOJSON
 
@@ -65,10 +64,11 @@ function getHexIdsInView(viewport, countrySelected) {
   const hexesInCountry = renderAllLargeHexes(countrySelected);
   const hexesInCountryDict = {};
   hexesInCountry.forEach((id) => (hexesInCountryDict[id] = true));
+  var hexIDs;
   if (zoom < 6) {
-    var hexIDs = hexesInCountry;
+    hexIDs = hexesInCountry;
   } else {
-    var hexIDs = polyfill([nw, ne, se, sw], resolution);
+    hexIDs = polyfill([nw, ne, se, sw], resolution);
     hexIDs = hexIDs.filter((id) => h3ToParent(id, 2) in hexesInCountryDict);
   }
   return hexIDs;
