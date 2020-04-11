@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Source, Layer } from "react-map-gl";
 import WebMercatorViewport from "viewport-mercator-project";
 import { polyfill, h3ToParent } from "h3-js";

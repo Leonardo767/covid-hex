@@ -6,6 +6,7 @@ import ReactMapGL, {
 import { easeCubic } from "d3-ease";
 import Search from "./components/Search";
 import HexRender from "./layers";
+import CountyRender from "./counties";
 import { Point } from "./api/mapbox"; // eslint-disable-line
 import * as countryInfo from "./data/map-settings-by-country.json";
 
@@ -120,6 +121,7 @@ class Map extends React.Component {
             viewport={this.state.viewport}
             countrySelected={this.props.countrySelected}
           ></HexRender>
+          <CountyRender />
         </ReactMapGL>
         <Search location={this.state.location} onChange={this.onSearchChange} />
       </div>
