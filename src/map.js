@@ -117,10 +117,10 @@ class Map extends React.Component {
           touchRotate={false}
           // ref={(map) => (this._map = map)}
         >
-          <HexRender
+          {/* <HexRender
             viewport={this.state.viewport}
             countrySelected={this.props.countrySelected}
-          ></HexRender>
+          /> */}
           <CountyRender />
         </ReactMapGL>
         <Search location={this.state.location} onChange={this.onSearchChange} />

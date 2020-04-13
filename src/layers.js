@@ -94,13 +94,14 @@ function getHexGeoJson(viewport, countrySelected) {
 
 function HexRender(props) {
   return (
-    <Source
-      id="h3-hexes"
-      type="geojson"
-      data={getHexGeoJson(props.viewport, props.countrySelected)}
-    >
+    <div>
+      <Source
+        id="h3-hexes"
+        type="geojson"
+        data={getHexGeoJson(props.viewport, props.countrySelected)}
+      />
       <Layer {...hex_layer} />
-    </Source>
+    </div>
   );
 }
 
