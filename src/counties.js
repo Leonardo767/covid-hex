@@ -40,7 +40,7 @@ class CountyRender extends React.Component {
   componentDidMount() {
     console.log("Did mount in counties.js");
     const url =
-      "https://internal.chattadata.org/resource/unyk-9b2k.json?date=2020-01-21T00:00:00.000";
+      "https://internal.chattadata.org/resource/unyk-9b2k.json?date=2020-03-21T00:00:00.000";
     fetch(url)
       .then((response) => response.json())
       .then((json) => {
@@ -52,14 +52,14 @@ class CountyRender extends React.Component {
   }
 
   buildLayer(data) {
-    console.log(data);
     var expression = ["match", ["get", "GEOID"]];
     data.forEach((row) => {
-      var red = row["cases"] * 255;
+      var red = (row["cases"] / 200) * 255;
       var color = "rgba(" + red + ", " + 0 + ", " + 0 + ", 0.5)";
       expression.push(row["fips"], color);
     });
     expression.push("rgba(0,0,0,0)");
+    console.log(expression);
 
     // const county_colors = {
     //   id: "counties",
