@@ -30,7 +30,7 @@ class CountyColors extends React.Component {
       expression.push(row["fips"], color);
     });
     expression.push("rgba(0,0,0,0)");
-    console.log(expression);
+    // console.log(expression);
 
     const colors = {
       id: "counties",
@@ -44,7 +44,7 @@ class CountyColors extends React.Component {
       },
     };
     this.setState({ colors });
-    console.log(this.state.colors);
+    // console.log(this.state.colors);
   }
 
   render() {

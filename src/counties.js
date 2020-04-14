@@ -39,8 +39,10 @@ class CountyRender extends React.Component {
 
   componentDidMount() {
     console.log("Did mount in counties.js");
+    const orig_query = "?date=2020-03-21T00:00:00.000";
+    const query = "?$where date=max(date)";
     const url =
-      "https://internal.chattadata.org/resource/unyk-9b2k.json?date=2020-03-21T00:00:00.000";
+      "https://internal.chattadata.org/resource/unyk-9b2k.json" + orig_query;
     fetch(url)
       .then((response) => response.json())
       .then((json) => {
@@ -59,7 +61,7 @@ class CountyRender extends React.Component {
       expression.push(row["fips"], color);
     });
     expression.push("rgba(0,0,0,0)");
-    console.log(expression);
+    console.log(data);
 
     // const county_colors = {
     //   id: "counties",
