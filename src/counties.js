@@ -8,6 +8,7 @@ class CountyRender extends React.Component {
     super();
     this.state = {
       county_colors: {},
+      mapData: {},
       isLoaded: false,
       error: null,
     };
@@ -28,9 +29,11 @@ class CountyRender extends React.Component {
         $$app_token: process.env.REACT_APP_SOCRATA_TOKEN,
       },
     }).done((data) => {
+      const [color_map, parsedData] = this.buildLayer(data);
       this.setState({
         isLoaded: true,
-        county_colors: this.buildLayer(data),
+        county_colors: color_map,
+        mapData: parsedData,
       });
     });
   }
@@ -49,7 +52,7 @@ class CountyRender extends React.Component {
       expression.push(fips, color);
     }
     expression.push("rgba(0,0,0,0)");
-    return expression;
+    return [expression, case_dict];
   }
 
   getLatestPerCounty(data) {
