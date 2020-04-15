@@ -47,9 +47,9 @@ class CountyRender extends React.Component {
     //   expression.push(row["fips"], color);
     // });
     for (const fips in case_dict) {
-      var red = (case_dict[fips]["cases"] / 200) * 255;
+      var red = (case_dict[fips]["cases"] / 2500) * 255;
       var color = "rgba(" + red + ", " + 0 + ", " + 0 + ", 0.5)";
-      expression.push(fips, color);
+      expression.push(case_dict[fips]["geoid"], color);
     }
     expression.push("rgba(0,0,0,0)");
     return [expression, case_dict];
@@ -63,11 +63,19 @@ class CountyRender extends React.Component {
         parseInt(entryDate.substring(8, 10));
       return cnt;
     }
+    function convertToGeoid(fipsEntry) {
+      var fipsNew = fipsEntry;
+      if (fipsEntry.length < 5) {
+        var fipsNew = "0" + fipsEntry;
+      }
+      return fipsNew;
+    }
     function newCaseCountEntry(dataEntry) {
       // const dateParsed = parseDate(dataEntry["date"]);
       return {
         date: dataEntry["date"].substring(0, 10),
         cases: dataEntry["cases"],
+        geoid: convertToGeoid(dataEntry["fips"]),
       };
     }
     console.log(data);
