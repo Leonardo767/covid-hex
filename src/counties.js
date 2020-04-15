@@ -1,31 +1,7 @@
 import React from "react";
 import { Source, Layer } from "react-map-gl";
+import $ from "jquery";
 // import CountyColors from "./countyColors";
-// import * as geoData from "./data/geoJson/ne_110m_admin_1_states_provinces.geojson";
-// import topojson from "topojson";
-
-// const county_layer = {
-//   id: "counties-layer",
-//   source: "counties",
-//   type: "line",
-//   interactive: false,
-//   paint: {
-//     "fill-opacity": 0.25,
-//     "fill-outline-color": "rgba(200,0,0,0.5)",
-//   },
-// };
-
-// function getCountySource() {
-//   //   const features = geoData;
-//   const features = { url: "mapbox://mapbox.82pkq93d" };
-//   console.log(features);
-//   return features;
-// }
-// <Source id="counties" type="vector" url="mapbox://mapbox.82pkq93d">
-//   <Layer source-layer="county" {...county_layer} />
-// </Source>
-
-// county source vector link: mapbox://mapbox.82pkq93d
 
 class CountyRender extends React.Component {
   constructor() {
@@ -39,47 +15,76 @@ class CountyRender extends React.Component {
 
   componentDidMount() {
     console.log("Did mount in counties.js");
-    const orig_query = "?date=2020-03-21T00:00:00.000";
-    const query = "?$where date=max(date)";
+    const query0 = "date=2020-03-21T00:00:00.000";
+    const query7 =
+      "$where=date between '2020-01-01T12:00:00' and '2020-04-14T14:00:00'";
     const url =
-      "https://internal.chattadata.org/resource/unyk-9b2k.json" + orig_query;
-    fetch(url)
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState({
-          isLoaded: true,
-          county_colors: this.buildLayer(json),
-        });
+      "https://internal.chattadata.org/resource/unyk-9b2k.json?" + query7;
+    $.ajax({
+      url: url,
+      type: "GET",
+      data: {
+        $limit: 100000,
+        $$app_token: process.env.REACT_APP_SOCRATA_TOKEN,
+      },
+    }).done((data) => {
+      this.setState({
+        isLoaded: true,
+        county_colors: this.buildLayer(data),
       });
+    });
   }
 
   buildLayer(data) {
+    const case_dict = this.getLatestPerCounty(data);
     var expression = ["match", ["get", "GEOID"]];
-    data.forEach((row) => {
-      var red = (row["cases"] / 200) * 255;
+    // data.forEach((row) => {
+    //   var red = (row["cases"] / 200) * 255;
+    //   var color = "rgba(" + red + ", " + 0 + ", " + 0 + ", 0.5)";
+    //   expression.push(row["fips"], color);
+    // });
+    for (const fips in case_dict) {
+      var red = (case_dict[fips]["cases"] / 200) * 255;
       var color = "rgba(" + red + ", " + 0 + ", " + 0 + ", 0.5)";
-      expression.push(row["fips"], color);
-    });
+      expression.push(fips, color);
+    }
     expression.push("rgba(0,0,0,0)");
-    console.log(data);
-
-    // const county_colors = {
-    //   id: "counties",
-    //   source: "counties",
-    //   type: "fill",
-    //   // "source-layer": "state_county_population_2014_cen",
-    //   interactive: false,
-    //   paint: {
-    //     "fill-color": expression[0],
-    //     "fill-outline-color": "rgba(0,0,0,0.5)",
-    //   },
-    // };
     return expression;
+  }
+
+  getLatestPerCounty(data) {
+    function parseDate(entryDate) {
+      // converts datestring to a numerical representation of days/months since 2020
+      const cnt =
+        parseInt(entryDate.substring(5, 7)) * 32 +
+        parseInt(entryDate.substring(8, 10));
+      return cnt;
+    }
+    function newCaseCountEntry(dataEntry) {
+      // const dateParsed = parseDate(dataEntry["date"]);
+      return {
+        date: dataEntry["date"].substring(0, 10),
+        cases: dataEntry["cases"],
+      };
+    }
+    console.log(data);
+    var case_count = new Object();
+    data.forEach((entry) => {
+      const fips = entry["fips"];
+      if (case_count.hasOwnProperty(fips)) {
+        if (parseDate(case_count[fips]["date"]) > parseDate(entry["date"])) {
+          // we've already logged a more recent date, skip
+          return;
+        }
+      }
+      case_count[fips] = newCaseCountEntry(entry);
+    });
+    console.log(case_count);
+    return case_count;
   }
 
   render() {
     // console.log(this.state.county_colors);
-
     return (
       <div>
         <Source
@@ -101,12 +106,9 @@ class CountyRender extends React.Component {
           // source-layer="state_county_population_2014_cen"
           paint={{
             "fill-color": this.state.county_colors,
-            "fill-outline-color": "rgba(0,0,0,0.5)",
-            // "line-color": "rgba(158, 158, 158, 0.5)",
-            // "line-width": 1,
+            "fill-outline-color": "rgba(158, 158, 158, 0.5)",
           }}
         />
-        {/* <Layer {...this.state.county_colors} /> */}
       </div>
     );
   }

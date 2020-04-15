@@ -14,6 +14,7 @@
     "geojson2h3": "^1.0.1",
     "h3-js": "^3.6.3",
     "h3-reactnative": "git+https://github.com/realPrimoh/h3-reactnative.git",
+    "jquery": "^3.5.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-map-gl": "^5.2.3",
