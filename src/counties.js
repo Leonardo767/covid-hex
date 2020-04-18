@@ -39,6 +39,21 @@ class CountyRender extends React.Component {
   }
 
   buildLayer(data) {
+    function determineColor(numCases) {
+      // 10,  100,  1000, 10000, 100000,  1000000
+      // 0/5, 1/5,  2/5,  3/5,   4/5,     5/5
+      const lvls = [0, 1, 2, 3, 4, 5];
+      for (var lvl in lvls) {
+        if (numCases < Math.pow(10, lvl)) {
+          var satLvl = (lvl * 100) / 5;
+          var alpha = (lvl * 0.6) / 5 + 0.1;
+          break;
+        }
+      }
+      var colorCalc = "hsla(0, " + satLvl + "%, 30%, " + alpha + ")";
+      return colorCalc;
+    }
+
     const case_dict = this.getLatestPerCounty(data);
     var expression = ["match", ["get", "GEOID"]];
     // data.forEach((row) => {
@@ -47,8 +62,9 @@ class CountyRender extends React.Component {
     //   expression.push(row["fips"], color);
     // });
     for (const fips in case_dict) {
-      var red = (case_dict[fips]["cases"] / 2500) * 255;
-      var color = "rgba(" + red + ", " + 0 + ", " + 0 + ", 0.5)";
+      // var red = determineColor(case_dict[fips]["cases"]);
+      var color = determineColor(case_dict[fips]["cases"]);
+      // var color = "rgba(" + red + ", " + 0 + ", " + 0 + ", 0.5)";
       expression.push(case_dict[fips]["geoid"], color);
     }
     expression.push("rgba(0,0,0,0)");
