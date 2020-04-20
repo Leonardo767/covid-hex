@@ -18,7 +18,7 @@ class CountyRender extends React.Component {
     console.log("Did mount in counties.js");
     const query0 = "date=2020-03-21T00:00:00.000";
     const query7 =
-      "$where=date between '2020-01-01T12:00:00' and '2020-04-14T14:00:00'";
+      "$where=date between '2020-01-01T12:00:00' and '2020-04-18T14:00:00'";
     const url =
       "https://internal.chattadata.org/resource/unyk-9b2k.json?" + query7;
     $.ajax({
@@ -45,8 +45,8 @@ class CountyRender extends React.Component {
       const lvls = [0, 1, 2, 3, 4, 5];
       for (var lvl in lvls) {
         if (numCases < Math.pow(10, lvl)) {
-          var satLvl = (lvl * 100) / 5;
-          var alpha = (lvl * 0.6) / 5 + 0.1;
+          var satLvl = (lvl * 100) / (lvls.length - 1);
+          var alpha = (lvl * 0.7) / (lvls.length - 1);
           break;
         }
       }
